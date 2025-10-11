@@ -29,9 +29,9 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:50px_50px] opacity-20" />
 
       <div className="relative z-10 container mx-auto px-4 pt-20 pb-16 min-h-screen flex items-center">
-        <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
           {/* Left Content */}
-          <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
+          <div className={`space-y-8 order-2 lg:order-1 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
             {/* Badge */}
             
 
@@ -78,14 +78,18 @@ const HeroSection = () => {
           </div>
 
           {/* Right Content - Photo */}
-          <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{
+          <div className={`order-1 lg:order-2 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{
           animationDelay: '0.3s'
         }}>
             {/* Enhanced Photo Display */}
-            <div className="relative group">
+            <div className="relative group max-w-lg mx-auto lg:max-w-none">
               <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/20 to-blue-500/10 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-700" />
               <div className="relative rounded-3xl overflow-hidden border border-white/20 backdrop-blur-sm bg-white/5 hover-scale">
-                <img alt="Dr. Frederick Parreira - Terapeuta e Psicanalista" className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" src={drFrederickHero} />
+                <img 
+                  alt="Dr. Frederick Parreira - Terapeuta e Psicanalista" 
+                  className="w-full h-auto object-cover object-center transform group-hover:scale-105 transition-transform duration-700 max-h-[600px] lg:max-h-[700px]" 
+                  src={drFrederickHero} 
+                />
               </div>
             </div>
           </div>
