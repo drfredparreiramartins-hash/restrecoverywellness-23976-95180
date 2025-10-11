@@ -2,27 +2,26 @@ import { useState, useEffect } from "react";
 import { ArrowRight, Instagram, Phone, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import drFrederickHero from "@/assets/dr-frederick-1.jpg";
-
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
-
   useEffect(() => {
     setIsVisible(true);
   }, []);
-
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
   };
-
-  return (
-    <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+  return <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{
+        animationDelay: '1s'
+      }} />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-purple-500/5 to-transparent rounded-full blur-3xl animate-spin-slow" />
       </div>
 
@@ -34,10 +33,7 @@ const HeroSection = () => {
           {/* Left Content */}
           <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500/20 to-blue-500/10 rounded-full border border-purple-500/30 backdrop-blur-sm">
-              <Star className="w-4 h-4 text-purple-400 mr-2" />
-              <span className="text-sm font-medium text-white">Mais de 1.1 Milhão de Seguidores</span>
-            </div>
+            
 
             {/* Main Headline */}
             <div className="space-y-4">
@@ -54,20 +50,11 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-400 hover:to-blue-400 text-white font-semibold px-8 py-4 text-lg hover-scale group"
-                onClick={() => scrollToSection('contact')}
-              >
+              <Button size="lg" className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-400 hover:to-blue-400 text-white font-semibold px-8 py-4 text-lg hover-scale group" onClick={() => scrollToSection('contact')}>
                 Agende Sua Consulta
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-8 py-4 text-lg backdrop-blur-sm"
-                onClick={() => window.open('https://instagram.com/drfredmartinsjf', '_blank')}
-              >
+              <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20 px-8 py-4 text-lg backdrop-blur-sm" onClick={() => window.open('https://instagram.com/drfredmartinsjf', '_blank')}>
                 <Instagram className="mr-2 w-5 h-5" />
                 Seguir no Instagram
               </Button>
@@ -91,16 +78,14 @@ const HeroSection = () => {
           </div>
 
           {/* Right Content - Photo */}
-          <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.3s' }}>
+          <div className={`space-y-8 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{
+          animationDelay: '0.3s'
+        }}>
             {/* Enhanced Photo Display */}
             <div className="relative group">
               <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/20 to-blue-500/10 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-700" />
               <div className="relative rounded-3xl overflow-hidden border border-white/20 backdrop-blur-sm bg-white/5 hover-scale">
-                <img 
-                  alt="Dr. Frederick Parreira - Terapeuta e Psicanalista" 
-                  className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" 
-                  src={drFrederickHero} 
-                />
+                <img alt="Dr. Frederick Parreira - Terapeuta e Psicanalista" className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" src={drFrederickHero} />
               </div>
             </div>
           </div>
@@ -113,8 +98,6 @@ const HeroSection = () => {
           <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse" />
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
