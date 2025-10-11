@@ -3,17 +3,17 @@ import { Mail, Phone, Instagram } from "lucide-react";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div>
-            <span className="inline-block px-4 py-2 bg-purple-100 text-purple-700 rounded-full font-medium mb-4">
+            <span className="inline-block px-4 py-2 bg-accent text-accent-foreground rounded-full font-medium mb-4">
               Entre em Contato
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
               Pronto Para Começar Sua Jornada?
             </h2>
-            <p className="text-lg text-slate-600 mb-10">
+            <p className="text-lg text-muted-foreground mb-10">
               Entre em contato para agendar uma consulta ou tirar dúvidas sobre terapia, 
               psicanálise ou parcerias profissionais.
             </p>
@@ -22,12 +22,12 @@ const ContactSection = () => {
 
               {/* WhatsApp */}
               <div className="flex items-start">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                  <Phone size={24} className="text-purple-700" />
+                <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <Phone size={24} className="text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-2">WhatsApp</h3>
-                  <p className="text-slate-600">
+                  <p className="text-muted-foreground">
                     +55 32 9193-1779
                   </p>
                 </div>
@@ -35,12 +35,12 @@ const ContactSection = () => {
 
               {/* Email */}
               <div className="flex items-start">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                  <Mail size={24} className="text-purple-700" />
+                <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <Mail size={24} className="text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-2">E-mail (Parcerias)</h3>
-                  <p className="text-slate-600">
+                  <p className="text-muted-foreground">
                     parcerias@drfredmartins.com.br
                   </p>
                 </div>
@@ -48,8 +48,8 @@ const ContactSection = () => {
 
               {/* Instagram */}
               <div className="flex items-start">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                  <Instagram size={24} className="text-purple-700" />
+                <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <Instagram size={24} className="text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-2">Instagram</h3>
@@ -57,7 +57,7 @@ const ContactSection = () => {
                     href="https://instagram.com/drfredmartinsjf" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-purple-700 hover:text-purple-900 font-medium"
+                    className="text-primary hover:text-primary/80 font-medium"
                   >
                     @drfredmartinsjf
                   </a>
@@ -67,33 +67,70 @@ const ContactSection = () => {
           </div>
           
           <div>
-            <h3 className="text-2xl font-semibold mb-6 text-slate-900">Envie Uma Mensagem</h3>
-            <div className="bg-white rounded-lg shadow-lg p-4 overflow-auto">
-              <iframe
-                id="JotFormIFrame-251135682357156"
-                title="Rest Recovery Contact"
-                onLoad={() => window.parent.scrollTo(0,0)}
-                allowTransparency={true}
-                allow="geolocation; microphone; camera; fullscreen"
-                src="https://form.jotform.com/251135682357156"
-                frameBorder={0}
-                style={{ 
-                  width: '100%', 
-                  maxWidth: '640px', 
-                  height: '600px', 
-                  border: 'none',
-                  margin: '0 auto',
-                  display: 'block'
-                }}
-                scrolling="yes"
-              />
-              <script src="https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js" />
-              <script dangerouslySetInnerHTML={{
-                __html: `
-                  window.jotformEmbedHandler("iframe[id='JotFormIFrame-251135682357156']", "https://form.jotform.com/")
-                `
-              }} />
-            </div>
+            <h3 className="text-2xl font-semibold mb-6 text-foreground">Envie Uma Mensagem</h3>
+            <form className="space-y-6 bg-card rounded-lg shadow-lg p-8 border border-border">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                  Nome Completo
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Seu nome"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                  E-mail
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="seu@email.com"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
+                  Telefone (opcional)
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="(00) 00000-0000"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                  Mensagem
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  placeholder="Conte-me um pouco sobre o que você está buscando..."
+                />
+              </div>
+              
+              <button
+                type="submit"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold py-3 px-6 rounded-lg transition-colors"
+              >
+                Enviar Mensagem
+              </button>
+            </form>
           </div>
         </div>
       </div>

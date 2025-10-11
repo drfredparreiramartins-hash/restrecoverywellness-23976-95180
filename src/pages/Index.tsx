@@ -1,4 +1,5 @@
 
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StorySection from "@/components/StorySection";
@@ -10,6 +11,7 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <AnnouncementBanner />
       <Navbar />
       <main>
         <HeroSection />
