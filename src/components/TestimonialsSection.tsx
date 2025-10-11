@@ -4,7 +4,7 @@ import { Star } from "lucide-react";
 
 const TestimonialsSection = () => {
   return (
-    <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-slate-900 to-purple-900 border-t border-white/5">
+    <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-b from-slate-900 to-blue-900 border-t border-white/5">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-block px-4 py-2 bg-white/5 text-white rounded-full font-medium mb-4">
@@ -20,11 +20,11 @@ const TestimonialsSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-white/10 border-white/10 backdrop-blur-md hover:border-purple-400/30 transition-all">
+            <Card key={index} className="bg-white/10 border-white/10 backdrop-blur-md hover:border-blue-400/30 transition-all">
               <CardContent className="p-8">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={20} fill="#c084fc" color="#c084fc" />
+                    <Star key={i} size={20} fill="#3b82f6" color="#3b82f6" />
                   ))}
                 </div>
                 <p className="text-white/80 mb-6 italic">"{testimonial.quote}"</p>

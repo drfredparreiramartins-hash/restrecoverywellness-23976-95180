@@ -19,19 +19,19 @@
     --border: 210 20% 90%;
     --input: 210 20% 90%;
  
-    --primary: 210 60% 45%;
+    --primary: 205 85% 50%;
     --primary-foreground: 0 0% 100%;
  
     --secondary: 210 25% 95%;
-    --secondary-foreground: 210 60% 35%;
+    --secondary-foreground: 205 75% 40%;
  
-    --accent: 195 80% 92%;
-    --accent-foreground: 210 60% 35%;
+    --accent: 195 90% 94%;
+    --accent-foreground: 205 75% 40%;
  
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --ring: 210 60% 45%;
+    --ring: 205 85% 50%;
  
     --radius: 0.5rem;
   }

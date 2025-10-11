@@ -4,9 +4,9 @@ import drFrederickStory from "@/assets/dr-frederick-2.png";
 
 const StorySection = () => {
   return (
-    <section id="about" className="py-12 md:py-20 lg:py-24 bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <section id="about" className="py-12 md:py-20 lg:py-24 bg-gradient-to-b from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
       {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-900/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-transparent" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -18,7 +18,7 @@ const StorySection = () => {
               </span>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
                 Transformando Vidas com
-                <span className="block bg-gradient-to-r from-purple-300 to-blue-300 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
                   Ciência e Autenticidade
                 </span>
               </h2>
@@ -39,7 +39,7 @@ const StorySection = () => {
                 Hoje, com mais de 1.1 milhão de seguidores no Instagram, ele transforma temas complexos em conteúdo 
                 acessível, criando uma conexão profunda com seu público.
               </p>
-              <blockquote className="text-xl font-medium text-white italic border-l-4 border-purple-400 pl-6">
+              <blockquote className="text-xl font-medium text-white italic border-l-4 border-blue-400 pl-6">
                 "Transformar e entreter ao mesmo tempo - esse é o meu propósito."
               </blockquote>
             </div>
@@ -49,7 +49,7 @@ const StorySection = () => {
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <stat.icon className="w-6 h-6 text-purple-300" />
+                    <stat.icon className="w-6 h-6 text-blue-300" />
                   </div>
                   <div className="text-2xl font-bold text-white mb-1">{stat.number}</div>
                   <div className="text-sm text-white/60">{stat.label}</div>
@@ -73,9 +73,9 @@ const StorySection = () => {
 
           {/* Image */}
           <div className="relative">
-            <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-3xl blur-2xl" />
+            <div className="absolute -inset-8 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-3xl blur-2xl" />
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-              <img 
+              <img
                 alt="Dr. Frederick Parreira" 
                 className="w-full h-auto transform hover:scale-105 transition-transform duration-700" 
                 src={drFrederickStory} 
