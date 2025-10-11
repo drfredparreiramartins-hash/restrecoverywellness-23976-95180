@@ -15,14 +15,14 @@ const HeroSection = () => {
       });
     }
   };
-  return <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+  return <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{
+        <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{
         animationDelay: '1s'
       }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-purple-500/5 to-transparent rounded-full blur-3xl animate-spin-slow" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/5 to-transparent rounded-full blur-3xl animate-spin-slow" />
       </div>
 
       {/* Grid Pattern Overlay */}
@@ -39,7 +39,7 @@ const HeroSection = () => {
             <div className="space-y-4">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
                 Transforme Sua
-                <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                   Jornada Interior
                 </span>
               </h1>
@@ -50,7 +50,7 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-400 hover:to-blue-400 text-white font-semibold px-8 py-4 text-lg hover-scale group" onClick={() => scrollToSection('contact')}>
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-semibold px-8 py-4 text-lg hover-scale group" onClick={() => scrollToSection('contact')}>
                 Agende Sua Consulta
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -63,15 +63,15 @@ const HeroSection = () => {
             {/* Social Proof Stats */}
             <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400">1.1M+</div>
+                <div className="text-3xl font-bold text-blue-400">1.1M+</div>
                 <div className="text-sm text-white/70">Seguidores</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400">10+</div>
+                <div className="text-3xl font-bold text-blue-400">10+</div>
                 <div className="text-sm text-white/70">Anos Clínica</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-400">PhD</div>
+                <div className="text-3xl font-bold text-blue-400">PhD</div>
                 <div className="text-sm text-white/70">Psicanálise</div>
               </div>
             </div>
@@ -83,7 +83,7 @@ const HeroSection = () => {
         }}>
             {/* Enhanced Photo Display */}
             <div className="relative group max-w-lg mx-auto lg:max-w-none">
-              <div className="absolute -inset-8 bg-gradient-to-r from-purple-500/20 to-blue-500/10 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-700" />
+              <div className="absolute -inset-8 bg-gradient-to-r from-blue-500/20 to-cyan-500/10 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-700" />
               <div className="relative rounded-3xl overflow-hidden border border-white/20 backdrop-blur-sm bg-white/5 hover-scale">
                 <img 
                   alt="Dr. Frederick Parreira - Terapeuta e Psicanalista" 
