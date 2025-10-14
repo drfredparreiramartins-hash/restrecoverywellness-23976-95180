@@ -16,6 +16,9 @@ import Accessibility from "./pages/Accessibility";
 import CookiePolicy from "./pages/CookiePolicy";
 import ReturnsPolicy from "./pages/ReturnsPolicy";
 import Redirect from "./pages/Redirect";
+import Auth from "./pages/Auth";
+import Doctor from "./pages/Doctor";
+import Patient from "./pages/Patient";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +34,9 @@ const App = () => (
           <Route path="/licensee" element={<Licensee />} />
           <Route path="/owners" element={<Owners />} />
           <Route path="/redirect" element={<Redirect />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/doctor" element={<Doctor />} />
+          <Route path="/patient" element={<Patient />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/license-disclosure" element={<LicenseDisclosure />} />

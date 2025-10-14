@@ -1,11 +1,26 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Instagram } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Menu, X, Instagram, LogIn, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const scrollToSection = (sectionId: string) => {
     try {
@@ -82,6 +97,28 @@ const Navbar = () => {
             <Instagram size={20} />
             Instagram
           </a>
+          {user ? (
+            <Button 
+              onClick={async () => {
+                await supabase.auth.signOut();
+                navigate("/");
+              }}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <LogOut size={16} />
+              Sair
+            </Button>
+          ) : (
+            <Button 
+              onClick={() => navigate("/auth")}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <LogIn size={16} />
+              Entrar
+            </Button>
+          )}
         </nav>
 
         {/* Desktop Button */}
@@ -156,7 +193,33 @@ const Navbar = () => {
               <Instagram size={20} />
               Instagram
             </a>
-            <Button 
+            {user ? (
+              <Button 
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  navigate("/");
+                  setIsMenuOpen(false);
+                }}
+                variant="outline"
+                className="flex items-center gap-2 w-full mt-2"
+              >
+                <LogOut size={16} />
+                Sair
+              </Button>
+            ) : (
+              <Button 
+                onClick={() => {
+                  navigate("/auth");
+                  setIsMenuOpen(false);
+                }}
+                variant="outline"
+                className="flex items-center gap-2 w-full mt-2"
+              >
+                <LogIn size={16} />
+                Entrar
+              </Button>
+            )}
+            <Button
               className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full w-full mt-2 py-4 text-lg"
               onClick={() => {
                 const element = document.getElementById('contact');
