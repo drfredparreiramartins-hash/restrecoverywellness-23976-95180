@@ -17,8 +17,8 @@ import CookiePolicy from "./pages/CookiePolicy";
 import ReturnsPolicy from "./pages/ReturnsPolicy";
 import Redirect from "./pages/Redirect";
 import Auth from "./pages/Auth";
-import Doctor from "./pages/Doctor";
 import Patient from "./pages/Patient";
+import Doctor from "./pages/Doctor";
 
 const queryClient = new QueryClient();
 

@@ -1,157 +1,139 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { Session, User } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { Calendar, Clock, FileText, LogOut, Video } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Calendar as CalendarIcon, LogOut, FileText, Video, Upload } from "lucide-react";
 
 const Patient = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isPatient, setIsPatient] = useState(false);
 
   useEffect(() => {
-    checkAuth();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const checkAuth = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) {
+  useEffect(() => {
+    if (!loading && !user) {
       navigate("/auth");
-      return;
     }
+  }, [user, loading, navigate]);
 
-    const { data: roleData } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "patient")
-      .single();
-
-    if (!roleData) {
-      toast({
-        title: "Acesso negado",
-        description: "Você não tem permissão para acessar esta página.",
-        variant: "destructive",
-      });
-      navigate("/");
-      return;
-    }
-
-    setIsPatient(true);
-    setLoading(false);
-  };
-
-  const handleLogout = async () => {
+  const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate("/");
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
-        <p className="text-white">Carregando...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Carregando...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-4xl font-bold text-white mb-2">Área do Paciente</h1>
-              <p className="text-blue-200">Gerencie suas consultas e documentos médicos</p>
-            </div>
-            <Button onClick={handleLogout} variant="outline">
-              <LogOut className="mr-2 h-4 w-4" />
-              Sair
-            </Button>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold">Portal do Paciente</h1>
+            <p className="text-muted-foreground mt-2">
+              Bem-vindo(a), {user?.user_metadata?.full_name || user?.email}
+            </p>
           </div>
+          <Button variant="outline" onClick={handleSignOut}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Sair
+          </Button>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Agendar Consulta</CardTitle>
-                <CardDescription>
-                  Veja os horários disponíveis e agende sua consulta
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  Ver Horários Disponíveis
-                </Button>
-              </CardContent>
-            </Card>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader>
+              <Calendar className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Agendar Consulta</CardTitle>
+              <CardDescription>
+                Veja os horários disponíveis e agende sua consulta
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full">Agendar Agora</Button>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Minhas Consultas</CardTitle>
-                <CardDescription>
-                  Veja suas consultas agendadas e histórico
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-center py-4">
-                  Nenhuma consulta agendada
-                </p>
-              </CardContent>
-            </Card>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader>
+              <Clock className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Minhas Consultas</CardTitle>
+              <CardDescription>
+                Veja suas consultas agendadas e histórico
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full" variant="outline">Ver Consultas</Button>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Documentos e Exames</CardTitle>
-                <CardDescription>
-                  Faça upload e gerencie seus documentos médicos
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" variant="outline">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Fazer Upload
-                </Button>
-              </CardContent>
-            </Card>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader>
+              <Video className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Telemedicina</CardTitle>
+              <CardDescription>
+                Inicie uma consulta por vídeo chamada
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full" variant="outline">Entrar na Sala</Button>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Prontuário Médico</CardTitle>
-                <CardDescription>
-                  Acesse seu histórico médico e prescrições
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" variant="outline">
-                  <FileText className="mr-2 h-4 w-4" />
-                  Ver Prontuário
-                </Button>
-              </CardContent>
-            </Card>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader>
+              <FileText className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Meus Documentos</CardTitle>
+              <CardDescription>
+                Upload e visualização de exames e documentos
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full" variant="outline">Ver Documentos</Button>
+            </CardContent>
+          </Card>
 
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle>Consulta por Vídeo</CardTitle>
-                <CardDescription>
-                  Participe de consultas online com seu médico
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" variant="outline">
-                  <Video className="mr-2 h-4 w-4" />
-                  Entrar na Consulta
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader>
+              <FileText className="h-8 w-8 mb-2 text-primary" />
+              <CardTitle>Prontuário</CardTitle>
+              <CardDescription>
+                Acesse seu histórico médico e prontuários
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full" variant="outline">Ver Prontuário</Button>
+            </CardContent>
+          </Card>
         </div>
       </main>
 

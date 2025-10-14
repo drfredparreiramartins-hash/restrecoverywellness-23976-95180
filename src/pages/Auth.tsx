@@ -4,10 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { User, Session } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -22,8 +22,8 @@ const Auth = () => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        if (session) {
-          checkUserRole(session.user.id);
+        if (session?.user) {
+          navigate("/");
         }
       }
     );
@@ -32,74 +32,52 @@ const Auth = () => {
       setSession(session);
       setUser(session?.user ?? null);
       
-      if (session) {
-        checkUserRole(session.user.id);
+      if (session?.user) {
+        navigate("/");
       }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
-
-  const checkUserRole = async (userId: string) => {
-    const { data, error } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .single();
-
-    if (!error && data) {
-      if (data.role === "doctor") {
-        navigate("/doctor");
-      } else if (data.role === "patient") {
-        navigate("/patient");
-      }
-    }
-  };
+  }, [navigate]);
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const fullName = formData.get("fullName") as string;
-    const role = formData.get("role") as string;
+    const email = formData.get("signup-email") as string;
+    const password = formData.get("signup-password") as string;
+    const fullName = formData.get("signup-name") as string;
+    const role = formData.get("signup-role") as string;
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            full_name: fullName,
-          },
+    const redirectUrl = `${window.location.origin}/`;
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: {
+          full_name: fullName,
+          role: role,
         },
-      });
+      },
+    });
 
-      if (error) throw error;
-
-      if (data.user) {
-        await supabase.from("user_roles").insert([{
-          user_id: data.user.id,
-          role: role as "admin" | "doctor" | "patient",
-        }]);
-
-        toast({
-          title: "Conta criada!",
-          description: "Você foi cadastrado com sucesso.",
-        });
-      }
-    } catch (error: any) {
+    if (error) {
       toast({
-        title: "Erro",
+        title: "Erro ao criar conta",
         description: error.message,
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
+    } else {
+      toast({
+        title: "Conta criada com sucesso!",
+        description: "Você já pode fazer login.",
+      });
     }
+
+    setLoading(false);
   };
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -107,57 +85,39 @@ const Auth = () => {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const email = formData.get("login-email") as string;
+    const password = formData.get("login-password") as string;
 
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (error) throw error;
-
+    if (error) {
       toast({
-        title: "Login realizado!",
-        description: "Bem-vindo de volta.",
-      });
-    } catch (error: any) {
-      toast({
-        title: "Erro",
+        title: "Erro ao fazer login",
         description: error.message,
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
+
+    setLoading(false);
   };
 
-  if (user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Redirecionando...</CardTitle>
-            <CardDescription>Aguarde enquanto verificamos sua conta.</CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Rest Recovery Wellness</CardTitle>
-          <CardDescription>Acesse sua conta ou crie uma nova</CardDescription>
+          <CardTitle className="text-2xl text-center">Rest Recovery & Wellness</CardTitle>
+          <CardDescription className="text-center">
+            Acesse sua conta ou crie uma nova
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="login">
+          <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Entrar</TabsTrigger>
-              <TabsTrigger value="signup">Cadastrar</TabsTrigger>
+              <TabsTrigger value="login">Login</TabsTrigger>
+              <TabsTrigger value="signup">Cadastro</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
@@ -166,20 +126,20 @@ const Auth = () => {
                   <Label htmlFor="login-email">Email</Label>
                   <Input
                     id="login-email"
-                    name="email"
+                    name="login-email"
                     type="email"
-                    required
                     placeholder="seu@email.com"
+                    required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="login-password">Senha</Label>
                   <Input
                     id="login-password"
-                    name="password"
+                    name="login-password"
                     type="password"
-                    required
                     placeholder="••••••••"
+                    required
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
@@ -194,36 +154,38 @@ const Auth = () => {
                   <Label htmlFor="signup-name">Nome Completo</Label>
                   <Input
                     id="signup-name"
-                    name="fullName"
+                    name="signup-name"
+                    type="text"
+                    placeholder="João Silva"
                     required
-                    placeholder="Seu nome"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
                   <Input
                     id="signup-email"
-                    name="email"
+                    name="signup-email"
                     type="email"
-                    required
                     placeholder="seu@email.com"
+                    required
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-password">Senha</Label>
                   <Input
                     id="signup-password"
-                    name="password"
+                    name="signup-password"
                     type="password"
-                    required
                     placeholder="••••••••"
+                    required
+                    minLength={6}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-role">Tipo de Conta</Label>
                   <select
                     id="signup-role"
-                    name="role"
+                    name="signup-role"
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     required
                   >
@@ -232,7 +194,7 @@ const Auth = () => {
                   </select>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Cadastrando..." : "Cadastrar"}
+                  {loading ? "Criando..." : "Criar Conta"}
                 </Button>
               </form>
             </TabsContent>
