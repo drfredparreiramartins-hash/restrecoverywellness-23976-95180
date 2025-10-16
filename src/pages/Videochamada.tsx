@@ -3,14 +3,23 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Phone, Mic, MicOff, Video, VideoOff } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+
+declare global {
+  interface Window {
+    JitsiMeetExternalAPI: any;
+  }
+}
 
 const Videochamada = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
   const [api, setApi] = useState<any>(null);
   const [audioMuted, setAudioMuted] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   const role = searchParams.get('role');
   const room = searchParams.get('room');
@@ -30,43 +39,89 @@ const Videochamada = () => {
   useEffect(() => {
     if (!containerRef.current || !room) return;
 
-    const roomName = `telemedicina-${room}`;
-    
-    // @ts-ignore
-    const jitsiApi = new window.JitsiMeetExternalAPI('meet.jit.si', {
-      roomName: roomName,
-      parentNode: containerRef.current,
-      configOverride: {
-        startWithAudioMuted: false,
-        startWithVideoMuted: false,
-        enableWelcomePage: false,
-      },
-      interfaceConfigOverride: {
-        TOOLBAR_BUTTONS: [
-          'microphone',
-          'camera',
-          'hangup',
-          'chat',
-          'fullscreen',
-        ],
-        SHOW_JITSI_WATERMARK: false,
-        SHOW_WATERMARK_FOR_GUESTS: false,
-      },
-      userInfo: {
-        displayName: role === 'doctor' ? 'Médico' : 'Paciente',
-      },
-    });
+    const initJitsi = () => {
+      if (!window.JitsiMeetExternalAPI) {
+        console.log('Aguardando carregamento do Jitsi...');
+        setTimeout(initJitsi, 500);
+        return;
+      }
 
-    setApi(jitsiApi);
+      try {
+        const roomName = `telemedicina-${room}`;
+        
+        const jitsiApi = new window.JitsiMeetExternalAPI('meet.jit.si', {
+          roomName: roomName,
+          parentNode: containerRef.current,
+          width: '100%',
+          height: '100%',
+          configOverride: {
+            startWithAudioMuted: false,
+            startWithVideoMuted: false,
+            enableWelcomePage: false,
+            prejoinPageEnabled: false,
+            disableDeepLinking: true,
+          },
+          interfaceConfigOverride: {
+            TOOLBAR_BUTTONS: [
+              'microphone',
+              'camera',
+              'closedcaptions',
+              'desktop',
+              'fullscreen',
+              'fodeviceselection',
+              'hangup',
+              'chat',
+              'settings',
+              'videoquality',
+              'filmstrip',
+              'tileview',
+            ],
+            SHOW_JITSI_WATERMARK: false,
+            SHOW_WATERMARK_FOR_GUESTS: false,
+            MOBILE_APP_PROMO: false,
+          },
+          userInfo: {
+            displayName: role === 'doctor' ? 'Médico' : 'Paciente',
+          },
+        });
 
-    jitsiApi.addEventListener('readyToClose', () => {
-      navigate(-1);
-    });
+        jitsiApi.addEventListener('videoConferenceJoined', () => {
+          console.log('Conferência iniciada');
+          setLoading(false);
+          toast({
+            title: "Conectado!",
+            description: "Você entrou na sala de consulta",
+          });
+        });
+
+        jitsiApi.addEventListener('readyToClose', () => {
+          navigate(-1);
+        });
+
+        jitsiApi.addEventListener('participantJoined', (participant: any) => {
+          console.log('Participante entrou:', participant);
+        });
+
+        setApi(jitsiApi);
+      } catch (error) {
+        console.error('Erro ao inicializar Jitsi:', error);
+        toast({
+          title: "Erro",
+          description: "Não foi possível iniciar a videochamada",
+          variant: "destructive",
+        });
+        setLoading(false);
+      }
+    };
+
+    initJitsi();
 
     return () => {
-      jitsiApi?.dispose();
+      if (api) {
+        api.dispose();
+      }
     };
-  }, [room, role, navigate]);
+  }, [room, role, navigate, toast]);
 
   const toggleAudio = () => {
     if (api) {
@@ -89,33 +144,15 @@ const Videochamada = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <div className="flex-1" ref={containerRef} />
-      
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-4 bg-background/80 backdrop-blur-sm p-4 rounded-lg shadow-lg">
-        <Button
-          variant={audioMuted ? "destructive" : "outline"}
-          size="icon"
-          onClick={toggleAudio}
-        >
-          {audioMuted ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
-        </Button>
-        
-        <Button
-          variant={videoMuted ? "destructive" : "outline"}
-          size="icon"
-          onClick={toggleVideo}
-        >
-          {videoMuted ? <VideoOff className="h-5 w-5" /> : <Video className="h-5 w-5" />}
-        </Button>
-        
-        <Button
-          variant="destructive"
-          size="icon"
-          onClick={endCall}
-        >
-          <Phone className="h-5 w-5" />
-        </Button>
-      </div>
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background z-50">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-lg">Carregando sala de consulta...</p>
+          </div>
+        </div>
+      )}
+      <div className="flex-1 w-full h-full" ref={containerRef} />
     </div>
   );
 };
