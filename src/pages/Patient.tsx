@@ -99,13 +99,13 @@ const Patient = () => {
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader>
               <Video className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Telemedicina</CardTitle>
+              <CardTitle>Consulta Online</CardTitle>
               <CardDescription>
                 Inicie uma consulta por vídeo chamada
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" variant="outline">Entrar na Sala</Button>
+              <Button className="w-full" variant="outline" onClick={() => window.open(`/videochamada?role=patient&room=${user?.id}`, '_blank')}>Entrar na Sala</Button>
             </CardContent>
           </Card>
 

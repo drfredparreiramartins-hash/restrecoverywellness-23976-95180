@@ -112,13 +112,13 @@ const Doctor = () => {
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader>
               <Video className="h-8 w-8 mb-2 text-primary" />
-              <CardTitle>Telemedicina</CardTitle>
+              <CardTitle>Consulta Online</CardTitle>
               <CardDescription>
                 Inicie consultas por vídeo chamada
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" variant="outline">Iniciar Consulta</Button>
+              <Button className="w-full" variant="outline" onClick={() => window.open(`/videochamada?role=doctor&room=${user?.id}`, '_blank')}>Iniciar Consulta</Button>
             </CardContent>
           </Card>
 

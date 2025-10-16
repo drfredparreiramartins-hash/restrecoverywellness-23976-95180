@@ -19,6 +19,7 @@ import Redirect from "./pages/Redirect";
 import Auth from "./pages/Auth";
 import Patient from "./pages/Patient";
 import Doctor from "./pages/Doctor";
+import Videochamada from "./pages/Videochamada";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/patient" element={<Patient />} />
+          <Route path="/videochamada" element={<Videochamada />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/license-disclosure" element={<LicenseDisclosure />} />
